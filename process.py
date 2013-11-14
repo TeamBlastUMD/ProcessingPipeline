@@ -148,7 +148,7 @@ for k,v in enumerate(b_nodes):
   n.write("(" + b_nodes[v]['x'] +","+ b_nodes[v]['y'] + ")\n")
   for k2 in sorted(b_nodes[v]['data']):
         v2 = b_nodes[v]['data'][k2]
-	a = -1
+		a = -1
         p = -1
         s = -1
         if 'a' in v2:
@@ -165,7 +165,7 @@ for k,v in enumerate(o_nodes):
   n.write("(" + o_nodes[v]['x'] +","+ o_nodes[v]['y'] + ")\n")
   for k2 in sorted(o_nodes[v]['data']):
         v2 = o_nodes[v]['data'][k2]
-	a = -1
+		a = -1
         p = -1
         s = -1
         if 'p' in v2:
