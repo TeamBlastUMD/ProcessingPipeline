@@ -12,13 +12,17 @@ output = subprocess.Popen(['ls ' + results_src  + ' | grep O_P | wc -l', ''],she
 o_count = int(output)
 output = subprocess.Popen(['ls ' + results_src  + ' | grep I_P | wc -l', ''],shell=True, stdout=subprocess.PIPE).communicate()[0]
 i_count = int(output)
+output = subprocess.Popen(['ls ' + results_src  + ' | grep L_P | wc -l', ''],shell=True, stdout=subprocess.PIPE).communicate()[0]
+l_count = int(output)
 subprocess.call(['mkdir -p ' + results_dst,''],shell=True)
 subprocess.call(['mkdir -p ' + results_dst + '/brain',''],shell=True)
 subprocess.call(['mkdir -p ' + results_dst + '/outer',''],shell=True)
 subprocess.call(['mkdir -p ' + results_dst + '/inner',''],shell=True)
+subprocess.call(['mkdir -p ' + results_dst + '/load',''],shell=True)
 b_nodes = {}
 o_nodes = {}
 i_nodes = {}
+l_nodes = {}
 with open(results_src + "/BRAIN_NODE_LOCATIONS") as locations_f:
   location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
   for line in locations_f:  
@@ -113,6 +117,32 @@ for i in range(1,i_count+1):
           i_nodes[n]['data'][time] = {}
           i_nodes[n]['data'][time]["str"]=time_str
           i_nodes[n]['data'][time]['p'] = r.group(2)
+with open(results_src + "/LOAD_NODE_LOCATIONS") as locations_f:
+  location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
+  for line in locations_f:  
+    r = location_regex.match(line)
+    if r:
+      n = int(r.group(1))
+      l_nodes[n] = {}
+      l_nodes[n]['x'] = r.group(2)
+      l_nodes[n]['y'] = r.group(3)
+      l_nodes[n]['data'] = {}
+for i in range(1,l_count+1):
+  time = None
+  with open(results_src + "/L_P_" + str(i)) as b_p_f:
+    for line in b_p_f:
+      if not time:
+        r = time_regex.match(line)
+        if r:
+          time_str = r.group(1)
+          time = float(time_str)
+      else:
+        r = pres_regex.match(line)
+        if r:
+          n = int(r.group(1))
+          l_nodes[n]['data'][time] = {}
+          l_nodes[n]['data'][time]["str"]=time_str
+          l_nodes[n]['data'][time]['p'] = r.group(2)
 for k,v in enumerate(b_nodes):
   n = open(results_dst + "/brain/node" + str(v), 'w')
   n.write("(" + b_nodes[v]['x'] +","+ b_nodes[v]['y'] + ")\n")
@@ -148,7 +178,20 @@ for k,v in enumerate(i_nodes):
   n.write("(" + i_nodes[v]['x'] +","+ i_nodes[v]['y'] + ")\n")
   for k2 in sorted(i_nodes[v]['data']):
         v2 = i_nodes[v]['data'][k2]
-	a = -1
+		a = -1
+        p = -1
+        s = -1
+        if 'p' in v2:
+          p = v2['p']
+        toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
+        n.write(toprint)
+  n.close()
+for k,v in enumerate(l_nodes):
+  n = open(results_dst + "/load/node" + str(v), 'w')
+  n.write("(" + l_nodes[v]['x'] +","+ l_nodes[v]['y'] + ")\n")
+  for k2 in sorted(l_nodes[v]['data']):
+        v2 = l_nodes[v]['data'][k2]
+		a = -1
         p = -1
         s = -1
         if 'p' in v2:
