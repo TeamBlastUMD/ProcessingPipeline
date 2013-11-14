@@ -117,7 +117,7 @@ for i in range(1,i_count+1):
           i_nodes[n]['data'][time] = {}
           i_nodes[n]['data'][time]["str"]=time_str
           i_nodes[n]['data'][time]['p'] = r.group(2)
-with open(results_src + "/LOAD_NODE_LOCATIONS") as locations_f:
+with open(results_src + "/LOAD_NODE_LOCATION") as locations_f:
   location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
   for line in locations_f:  
     r = location_regex.match(line)
@@ -148,7 +148,7 @@ for k,v in enumerate(b_nodes):
   n.write("(" + b_nodes[v]['x'] +","+ b_nodes[v]['y'] + ")\n")
   for k2 in sorted(b_nodes[v]['data']):
         v2 = b_nodes[v]['data'][k2]
-		a = -1
+        a = -1
         p = -1
         s = -1
         if 'a' in v2:
