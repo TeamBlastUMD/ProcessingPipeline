@@ -164,38 +164,38 @@ for k,v in enumerate(o_nodes):
   n = open(results_dst + "/outer/node" + str(v), 'w')
   n.write("(" + o_nodes[v]['x'] +","+ o_nodes[v]['y'] + ")\n")
   for k2 in sorted(o_nodes[v]['data']):
-        v2 = o_nodes[v]['data'][k2]
-		a = -1
-        p = -1
-        s = -1
-        if 'p' in v2:
-          p = v2['p']
-        toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
-        n.write(toprint)
+    v2 = o_nodes[v]['data'][k2]
+    a = -1
+    p = -1
+    s = -1
+    if 'p' in v2:
+      p = v2['p']
+      toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
+      n.write(toprint)
   n.close()
 for k,v in enumerate(i_nodes):
   n = open(results_dst + "/inner/node" + str(v), 'w')
   n.write("(" + i_nodes[v]['x'] +","+ i_nodes[v]['y'] + ")\n")
   for k2 in sorted(i_nodes[v]['data']):
-        v2 = i_nodes[v]['data'][k2]
-		a = -1
-        p = -1
-        s = -1
-        if 'p' in v2:
-          p = v2['p']
-        toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
-        n.write(toprint)
+    v2 = i_nodes[v]['data'][k2]
+    a = -1
+    p = -1
+    s = -1
+    if 'p' in v2:
+      p = v2['p']
+      toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
+      n.write(toprint)
   n.close()
 for k,v in enumerate(l_nodes):
   n = open(results_dst + "/load/node" + str(v), 'w')
   n.write("(" + l_nodes[v]['x'] +","+ l_nodes[v]['y'] + ")\n")
   for k2 in sorted(l_nodes[v]['data']):
-        v2 = l_nodes[v]['data'][k2]
-		a = -1
-        p = -1
-        s = -1
-        if 'p' in v2:
-          p = v2['p']
-        toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
-        n.write(toprint)
+    v2 = l_nodes[v]['data'][k2]
+    a = -1
+    p = -1
+    s = -1
+    if 'p' in v2:
+      p = v2['p']
+      toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
+      n.write(toprint)
   n.close()
