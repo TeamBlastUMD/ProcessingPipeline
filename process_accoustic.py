@@ -40,16 +40,18 @@ strain_regex = re.compile("\D+(\d+)\s+-*\d\.\d+E-?\d+\s*-*\d\.\d+E-*\d+\s*-*\d\.
 for i in range(1,b_count+1):
   time = None
   with open(results_src + "/B_P_" + str(i)) as b_p_f:
-	for line in b_p_f:
-      if not time:
+    for line in b_p_f:
+            if not time:
         r = time_regex.match(line)
         if r:
           time_str = r.group(1)
           time = float(time_str)
       else:
-        r = pres_regex.match(line)
+	    r = pres_regex.match(line)
         if r:
           n = int(r.group(1))
+		  b_nodes[n]['data'][time] = {}
+          b_nodes[n]['data'][time]["str"]=time_str
           b_nodes[n]['data'][time]['p'] = r.group(2)
 with open(results_src + "/OUTER_NODE_LOCATIONS") as locations_f:
   location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
@@ -103,7 +105,7 @@ for i in range(1,i_count+1):
           i_nodes[n]['data'][time] = {}
           i_nodes[n]['data'][time]["str"]=time_str
           i_nodes[n]['data'][time]['p'] = r.group(2)
-with open(results_src + "/LOAD_NODE_LOCATIONS") as locations_f:
+with open(results_src + "/LOAD_NODE_LOCATION") as locations_f:
   location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
   for line in locations_f:  
     r = location_regex.match(line)
@@ -134,7 +136,7 @@ for k,v in enumerate(b_nodes):
   n.write("(" + b_nodes[v]['x'] +","+ b_nodes[v]['y'] + ")\n")
   for k2 in sorted(b_nodes[v]['data']):
         v2 = b_nodes[v]['data'][k2]
-		a = -1
+        a = -1
         p = -1
         s = -1
         if 'a' in v2:
