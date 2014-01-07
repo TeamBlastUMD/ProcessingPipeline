@@ -6,7 +6,7 @@ if len(sys.argv)!=2:
 results_base="/data2/blast_project/ansys/results"
 results_src=results_base+"/"+sys.argv[1]
 results_dst=results_base+"/"+sys.argv[1]+"_processed"
-output = subprocess.Popen(['ls ' + results_src  + ' | grep B_A | wc -l', ''],shell=True, stdout=subprocess.PIPE).communicate()[0]
+output = subprocess.Popen(['ls ' + results_src  + ' | grep B_P | wc -l', ''],shell=True, stdout=subprocess.PIPE).communicate()[0]
 b_count = int(output)
 output = subprocess.Popen(['ls ' + results_src  + ' | grep O_P | wc -l', ''],shell=True, stdout=subprocess.PIPE).communicate()[0]
 o_count = int(output)
