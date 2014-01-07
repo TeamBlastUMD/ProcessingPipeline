@@ -19,30 +19,30 @@ def process(char,name, subdir, regex):
   count = int(output)
   nodes = {}
   with open(results_src + "/"+name+"_NODE_LOCATIONS") as locations_f:
-  for line in locations_f:  
-    r = location_regex.match(line)
-    if r:
-      n = int(r.group(1))
-      nodes[n] = {}
-      nodes[n]['x'] = r.group(2)
-      nodes[n]['y'] = r.group(3)
-      nodes[n]['data'] = {}
+    for line in locations_f:  
+      r = location_regex.match(line)
+      if r:
+        n = int(r.group(1))
+        nodes[n] = {}
+        nodes[n]['x'] = r.group(2)
+        nodes[n]['y'] = r.group(3)
+        nodes[n]['data'] = {}
   for i in range(1,count+1):
     time = None
-	with open(results_src + "/"+ char +"_P_" + str(i)) as p_f:
-	  for line in b_p_f:
-	    if not time:
-		  r = time_regex.match(line)
-		  if r:
-		    time_str = r.group(1)
-			time = float(time_str)
-		  else:
-		    r = regex.match(line)
-			if r:
-			  n = int(r.group(1))
-			  nodes[n]['data'][time] = {}
-			  nodes[n]['data'][time]["str"]=time_str
-			  nodes[n]['data'][time][char] = r.group(2)
+    with open(results_src + "/"+ char +"_P_" + str(i)) as p_f:
+      for line in b_p_f:
+        if not time:
+          r = time_regex.match(line)
+          if r:
+            time_str = r.group(1)
+            time = float(time_str)
+          else:
+            r = regex.match(line)
+            if r:
+              n = int(r.group(1))
+              nodes[n]['data'][time] = {}
+              nodes[n]['data'][time]["str"]=time_str
+              nodes[n]['data'][time][char] = r.group(2)
   for k,v in enumerate(nodes):
     n = open(results_dst + "/"+subdir+"/node" + str(v), 'w')
     n.write("(" + nodes[v]['x'] +","+ nodes[v]['y'] + ")\n")
