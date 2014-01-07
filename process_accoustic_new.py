@@ -4,6 +4,7 @@ import subprocess, sys, re
 def process(results_src,results_dst,char,name, subdir, regex):
   time_regex = re.compile("\s+TIME=\s*(\d\.\d+E-?\d+)\s*")
   location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
+  bad_ansys_regex = re.compile("([0-9\.\-]+)(\-\d+)")
   subprocess.call(['mkdir -p ' + results_dst + '/'+ subdir,''],shell=True)
   cmd = 'ls ' + results_src  + ' | grep ' + char  + '_P | wc -l'
   output = subprocess.Popen([cmd, ''],shell=True, stdout=subprocess.PIPE).communicate()[0]
@@ -34,7 +35,7 @@ def process(results_src,results_dst,char,name, subdir, regex):
             n = int(r.group(1))
             nodes[n]['data'][time] = {}
             nodes[n]['data'][time]["str"]=time_str
-            nodes[n]['data'][time][char] = r.group(2)
+            nodes[n]['data'][time][char] = process_float_string(r.group(2),bad_ansys_regex)
   for k,v in enumerate(nodes):
     n = open(results_dst + "/"+subdir+"/node" + str(v), 'w')
     n.write("(" + nodes[v]['x'] +","+ nodes[v]['y'] + ")\n")
@@ -49,6 +50,13 @@ def process(results_src,results_dst,char,name, subdir, regex):
       n.write(toprint)
     n.close()
 
+def process_float_string(str, regex):
+  r = regex.match(str)
+  if r:
+    return r.group(1) + "E" + r.group(2)
+  else:
+    return str
+	
 def main():
   if len(sys.argv)!=2:
     print "usage:python process.py <dir>"
