@@ -21,7 +21,7 @@ def process(results_src,results_dst,char,name, subdir, regex):
   for i in range(1,count+1):
     time = None
     with open(results_src + "/"+ char +"_P_" + str(i)) as p_f:
-      for line in b_p_f:
+      for line in p_f:
         if not time:
           r = time_regex.match(line)
           if r:
@@ -60,7 +60,8 @@ def main():
   results_src=results_base+"/"+sys.argv[1]
   results_dst=results_base+"/"+sys.argv[1]+"_processed"
   subprocess.call(['mkdir -p ' + results_dst,''],shell=True)
-  pres_regex = re.compile("\s+(\d+)\s*(-?\d+\.\d*(?:E-?\d+)?)")
+  #pres_regex = re.compile("\s+(\d+)\s*(-?\d+\.\d*(?:E-?\d+)?)")
+  pres_regex = re.compile("\s*(\d+)\s*([0-9\.\-]+)")
   process(results_src,results_dst,'B','BRAIN','brain', pres_regex)
   
 if __name__ == "__main__":
