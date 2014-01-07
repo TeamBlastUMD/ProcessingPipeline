@@ -61,7 +61,7 @@ def main():
   results_dst=results_base+"/"+sys.argv[1]+"_processed"
   subprocess.call(['mkdir -p ' + results_dst,''],shell=True)
   #pres_regex = re.compile("\s+(\d+)\s*(-?\d+\.\d*(?:E-?\d+)?)")
-  pres_regex = re.compile("\s*(\d+)\s*([0-9\.\-]+)")
+  pres_regex = re.compile("^\s*(\d+)\s*([0-9\.\-]+)$")
   process(results_src,results_dst,'B','BRAIN','brain', pres_regex)
   
 if __name__ == "__main__":
