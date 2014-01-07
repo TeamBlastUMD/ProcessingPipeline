@@ -1,7 +1,7 @@
 from __future__ import with_statement
 import subprocess, sys, re
 
-def process(char,name, subdir, regex):
+def process(results_src,results_dst,char,name, subdir, regex):
   subprocess.call(['mkdir -p ' + results_dst + '/'+ subdir,''],shell=True)
   cmd = 'ls ' + results_src  + ' | grep ' + char  + '_P | wc -l'
   output = subprocess.Popen([cmd, ''],shell=True, stdout=subprocess.PIPE).communicate()[0]
@@ -61,7 +61,7 @@ def main():
   time_regex = re.compile("\s+TIME=\s*(\d\.\d+E-?\d+)\s*")
   location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
   pres_regex = re.compile("\s+(\d+)\s*(-?\d+\.\d*(?:E-?\d+)?)")
-  process('B','BRAIN','brain', pres_regex)
+  process(results_src,results_dst,'B','BRAIN','brain', pres_regex)
   
 if __name__ == "__main__":
   main()
