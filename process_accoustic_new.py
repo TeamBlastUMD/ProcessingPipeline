@@ -1,16 +1,5 @@
 from __future__ import with_statement
 import subprocess, sys, re
-if len(sys.argv)!=2:
-  print "usage:python process.py <dir>"
-  exit(0)
-results_base="/data2/blast_project/ansys/results"
-results_src=results_base+"/"+sys.argv[1]
-results_dst=results_base+"/"+sys.argv[1]+"_processed"
-subprocess.call(['mkdir -p ' + results_dst,''],shell=True)
-time_regex = re.compile("\s+TIME=\s*(\d\.\d+E-?\d+)\s*")
-location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
-pres_regex = re.compile("\s+(\d+)\s*(-?\d+\.\d*(?:E-?\d+)?)")
-process('B','BRAIN','brain', pres_regex)
 
 def process(char,name, subdir, regex):
   subprocess.call(['mkdir -p ' + results_dst + '/'+ subdir,''],shell=True)
@@ -60,3 +49,19 @@ def process(char,name, subdir, regex):
       toprint=v2['str'] + "\t" +str(a) + "\t" + str(p) + "\t" +str(s) + "\n"
       n.write(toprint)
     n.close()
+
+def main():
+  if len(sys.argv)!=2:
+    print "usage:python process.py <dir>"
+    exit(0)
+  results_base="/data2/blast_project/ansys/results"
+  results_src=results_base+"/"+sys.argv[1]
+  results_dst=results_base+"/"+sys.argv[1]+"_processed"
+  subprocess.call(['mkdir -p ' + results_dst,''],shell=True)
+  time_regex = re.compile("\s+TIME=\s*(\d\.\d+E-?\d+)\s*")
+  location_regex = re.compile("\s+(\d+)\s+([\d\.\-E]+)\s+([\d\.\-E]+)\s+")
+  pres_regex = re.compile("\s+(\d+)\s*(-?\d+\.\d*(?:E-?\d+)?)")
+  process('B','BRAIN','brain', pres_regex)
+  
+if __name__ == "__main__":
+  main()
