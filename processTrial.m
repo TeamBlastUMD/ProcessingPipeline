@@ -87,9 +87,9 @@ if(~exist(xcorrFile))
            p1 = PRESSURE(num2str(n1));
            p2 = PRESSURE(num2str(n2));
            cc = max(xcorr(p1,p2,'coeff'));
-           CORRELATIONS(i*j)=cc;
+           CORRELATIONS(count)=cc;
            if(mod(j,1000)==0)
-                disp([num2str(count*1.0/total) '%   ' num2str(total-count) ' to go']);
+                disp([num2str(count*1.0/total*100) '%   ' num2str(total-count) ' to go. Last coeff = ' num2str(cc) ]);
            end
        end
        for j = 1: length(OUTER_NODES)
@@ -99,9 +99,9 @@ if(~exist(xcorrFile))
            p1 = PRESSURE(num2str(n1));
            p2 = PRESSURE(num2str(n2));
            cc = max(xcorr(p1,p2,'coeff'));
-           CORRELATIONS(i*j)=cc;
+           CORRELATIONS(count)=cc;
            if(mod(j,1000)==0)
-                disp([num2str(count*1.0/total) '%   ' num2str(total-count) ' to go']);
+                disp([num2str(count*1.0/total*100) '%   ' num2str(total-count) ' to go. Last coeff = ' num2str(cc) ]);
            end
        end
     end
@@ -128,4 +128,29 @@ function map = addNodesToMap(map,FILES,dir)
      data = dlmread(f, '\t', 1, 0);
      map(FILE(5:length(FILE)))= data(:,3)';
   end
+end
+
+function e=checkForDir(d)
+e = exist(d,'dir');
+if(~e)
+    disp(['directory ' d ' does not exist']);
+end
+end
+
+function e = checkForDirs(d)
+e = 1;
+for i=1:size(d,2)
+    if(~checkForDir(d{i}))
+        e = 0;
+    end
+end
+end
+
+function nodes = getNodeFiles(d)
+dir_res = dir([d '\NODE*']);
+num_nodes = size(dir_res,1);
+nodes = cell(1,num_nodes);
+for n = 1:num_nodes
+    nodes{n}=dir_res(n).name;
+end
 end
