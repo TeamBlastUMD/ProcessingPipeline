@@ -78,30 +78,23 @@ xcorrFile = 'xcorr.mat';
 if(~exist(xcorrFile))
     total = length(BRAIN_NODES)*(length(INNER_NODES)+length(OUTER_NODES));
     CORRELATIONS = zeros(1,total);
+	BRAIN_STR = strArray(BRAIN_NODES);
+	INNER_STR = strArray(INNER_NODES);
+	OUTER_STR = strArray(OUTER_NODES);
     count = 0;
-    for i = 1:length(BRAIN_NODES)
-       for j = 1:length(INNER_NODES)
+    for i = BRAIN_STR
+       for j = INNER_STR
            count = count + 1;
-           n1 = INNER_NODES(j);
-           n2 = BRAIN_NODES(i);
-           p1 = PRESSURE(num2str(n1));
-           p2 = PRESSURE(num2str(n2));
-           cc = max(xcorr(p1,p2,'coeff'));
-           CORRELATIONS(count)=cc;
-           if(mod(j,1000)==0)
-                disp([num2str(count*1.0/total*100) '%   ' num2str(total-count) ' to go. Last coeff = ' num2str(cc) ]);
+           CORRELATIONS(count) = max(xcorr(PRESSURE(j),PRESSURE(i),'coeff'));
+           if(mod(count,10000)==0)
+                disp([num2str(count*100.0/total) '%   ' num2str(total-count) ' to go. Last coeff = ' num2str(CORRELATIONS(count))) ]);
            end
        end
-       for j = 1: length(OUTER_NODES)
+       for j = OUTER_STR
            count = count + 1;
-           n1 = OUTER_NODES(j);
-           n2 = BRAIN_NODES(i);
-           p1 = PRESSURE(num2str(n1));
-           p2 = PRESSURE(num2str(n2));
-           cc = max(xcorr(p1,p2,'coeff'));
-           CORRELATIONS(count)=cc;
-           if(mod(j,1000)==0)
-                disp([num2str(count*1.0/total*100) '%   ' num2str(total-count) ' to go. Last coeff = ' num2str(cc) ]);
+           CORRELATIONS(count) = max(xcorr(PRESSURE(j),pressure(i),'coeff'));
+           if(mod(count,10000)==0)
+                disp([num2str(count*100.0/total) '%   ' num2str(total-count) ' to go. Last coeff = ' num2str(CORRELATIONS(count)) ]);
            end
        end
     end
@@ -153,4 +146,13 @@ nodes = cell(1,num_nodes);
 for n = 1:num_nodes
     nodes{n}=dir_res(n).name;
 end
+end
+
+function strA = strArray(ar)
+strA = cell(1,length(ar);
+	counter = 0;
+	for i=ar
+		counter = counter+1;
+		strA{counter} = num2str(i);
+	end
 end
